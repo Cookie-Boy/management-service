@@ -2,6 +2,7 @@ package ru.platform.management.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.platform.management.api.dto.MedicationRequestDto;
 import ru.platform.management.api.dto.MedicationResponseDto;
@@ -13,12 +14,12 @@ import ru.platform.management.core.service.MedicationService;
 @RequiredArgsConstructor
 public class MedicationController {
 
-    private final MedicationService medicationService;
-    private final MedicationMapper medicationMapper;
+    // Сначала напиши тесты для медикаментов! Ну и для докторов тоже, а потом уже пиши саму реализацию. (TTD)
 
-    public ResponseEntity<MedicationResponseDto> createMedication(MedicationRequestDto requestDto) {
-        Medication medication = medicationMapper.toEntity(requestDto);
-        MedicationResponseDto responseDto = medicationService.createMedication(medication);
+    private final MedicationService medicationService;
+
+    public ResponseEntity<MedicationResponseDto> createMedication(@RequestBody MedicationRequestDto medicationRequestDto) {
+        MedicationResponseDto responseDto = medicationService.createMedication(medicationRequestDto);
         return ResponseEntity.ok(responseDto);
     }
 

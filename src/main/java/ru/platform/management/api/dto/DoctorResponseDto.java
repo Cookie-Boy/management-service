@@ -1,4 +1,23 @@
 package ru.platform.management.api.dto;
 
-public record DoctorResponseDto() {
+import ru.platform.management.core.model.Specialization;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.UUID;
+
+public record DoctorResponseDto (
+        UUID id,
+        String firstName,
+        String lastName,
+        String middleName,
+        Specialization specialization,
+        String licenseNumber,
+        String phoneNumber,
+        String email,
+        LocalDate hireDate,
+        LocalTime startWorkingDay,
+        LocalTime endWorkingDay,
+        String bio
+) {
 }

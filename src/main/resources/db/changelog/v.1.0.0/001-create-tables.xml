@@ -1,0 +1,66 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.32.xsd">
+
+    <changeSet id="create-doctors-table" author="cool_developer">
+        <createTable tableName="doctors">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="VARCHAR(100)"/>
+            <column name="specialization" type="VARCHAR(255)"/>
+            <column name="license_number" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="hire_date" type="DATE"/>
+            <column name="start_working_day" type="TIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_working_day" type="TIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bio" type="TEXT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-medications-table" author="cool_developer">
+        <createTable tableName="medications">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="description" type="TEXT"/>
+            <column name="manufacturer" type="VARCHAR(255)"/>
+            <column name="batch_number" type="VARCHAR(100)"/>
+            <column name="expiry_date" type="DATE"/>
+            <column name="quantity_in_stock" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="min_stock_level" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reorder_quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_per_unit" type="DECIMAL(19, 2)"/>
+            <column name="is_prescription_only" type="BOOLEAN" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

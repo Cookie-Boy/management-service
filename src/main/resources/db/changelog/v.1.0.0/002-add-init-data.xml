@@ -1,0 +1,71 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.32.xsd">
+
+    <!-- Добавление тестовых врачей -->
+    <changeSet id="insert-doctors-data" author="cool_developer">
+        <insert tableName="doctors">
+            <column name="id" value="a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"/>
+            <column name="first_name" value="Иван"/>
+            <column name="last_name" value="Петров"/>
+            <column name="middle_name" value="Сергеевич"/>
+            <column name="specialization" value="GENERAL_PRACTITIONER"/>
+            <column name="license_number" value="LIC-12345"/>
+            <column name="phone_number" value="+79161234567"/>
+            <column name="email" value="ivan.petrov@example.com"/>
+            <column name="hire_date" value="2020-01-15"/>
+            <column name="start_working_day" value="08:00:00"/>
+            <column name="end_working_day" value="16:00:00"/>
+            <column name="bio" value="Опытный терапевт с 10-летним стажем."/>
+        </insert>
+
+        <insert tableName="doctors">
+            <column name="id" value="b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12"/>
+            <column name="first_name" value="Мария"/>
+            <column name="last_name" value="Иванова"/>
+            <column name="middle_name" value="Александровна"/>
+            <column name="specialization" value="CARDIOLOGIST"/>
+            <column name="license_number" value="LIC-54321"/>
+            <column name="phone_number" value="+79167654321"/>
+            <column name="email" value="maria.ivanova@example.com"/>
+            <column name="hire_date" value="2018-05-20"/>
+            <column name="start_working_day" value="09:00:00"/>
+            <column name="end_working_day" value="17:00:00"/>
+            <column name="bio" value="Кардиолог высшей категории."/>
+        </insert>
+    </changeSet>
+
+    <!-- Добавление тестовых лекарств -->
+    <changeSet id="insert-medications-data" author="cool_developer">
+        <insert tableName="medications">
+            <column name="id" value="c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a13"/>
+            <column name="name" value="Аспирин"/>
+            <column name="description" value="Обезболивающее и жаропонижающее средство."/>
+            <column name="manufacturer" value="Bayer"/>
+            <column name="batch_number" value="ASP-2023-001"/>
+            <column name="expiry_date" value="2025-12-31"/>
+            <column name="quantity_in_stock" value="150"/>
+            <column name="min_stock_level" value="50"/>
+            <column name="reorder_quantity" value="100"/>
+            <column name="price_per_unit" value="120.50"/>
+            <column name="is_prescription_only" value="false"/>
+        </insert>
+
+        <insert tableName="medications">
+            <column name="id" value="d3eebc99-9c0b-4ef8-bb6d-6bb9bd380a14"/>
+            <column name="name" value="Амоксициллин"/>
+            <column name="description" value="Антибиотик широкого спектра действия."/>
+            <column name="manufacturer" value="Pfizer"/>
+            <column name="batch_number" value="AMX-2023-002"/>
+            <column name="expiry_date" value="2024-06-30"/>
+            <column name="quantity_in_stock" value="75"/>
+            <column name="min_stock_level" value="30"/>
+            <column name="reorder_quantity" value="50"/>
+            <column name="price_per_unit" value="350.00"/>
+            <column name="is_prescription_only" value="true"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

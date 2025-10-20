@@ -1,5 +1,6 @@
 package ru.platform.management.core.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -20,5 +21,15 @@ public enum Specialization {
 
     Specialization(String name) {
         this.name = name;
+    }
+
+    @JsonCreator
+    public static Specialization fromName(String name) {
+        for (Specialization specialization : Specialization.values()) {
+            if (specialization.name.equalsIgnoreCase(name)) {
+                return specialization;
+            }
+        }
+        throw new IllegalArgumentException("Неизвестная специализация: " + name);
     }
 }

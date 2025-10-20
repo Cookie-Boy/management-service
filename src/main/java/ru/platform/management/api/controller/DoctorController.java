@@ -1,6 +1,7 @@
 package ru.platform.management.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.platform.management.api.dto.DoctorRequestDto;
@@ -21,7 +22,7 @@ public class DoctorController {
     @PostMapping
     public ResponseEntity<DoctorResponseDto> createDoctor(@RequestBody DoctorRequestDto doctorRequestDto) {
         DoctorResponseDto createdDoctor = doctorService.createDoctor(doctorRequestDto);
-        return ResponseEntity.ok(createdDoctor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdDoctor);
     }
 
     @GetMapping

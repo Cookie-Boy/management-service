@@ -11,19 +11,13 @@ import ru.platform.management.api.dto.ErrorResponseDto;
 public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleEntityNotFoundException(EntityNotFoundException ex) {
-        ErrorResponseDto errorResponse = new ErrorResponseDto(404, ex.getMessage());
+        ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-    }
-
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponseDto> handleRuntimeException(Exception ex) {
-        ErrorResponseDto errorResponse = new ErrorResponseDto(400, ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleGeneralException(Exception ex) {
-        ErrorResponseDto errorResponse = new ErrorResponseDto(500, ex.getMessage());
+        ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 }

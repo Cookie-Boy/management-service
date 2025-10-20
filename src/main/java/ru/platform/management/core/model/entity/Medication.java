@@ -16,7 +16,8 @@ import java.util.UUID;
 public class Medication {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "UUID")
     private UUID id;
 
     @NotBlank(message = "Название лекарства не может быть пустым")
@@ -38,28 +39,45 @@ public class Medication {
     private LocalDate expiryDate;
 
     @PositiveOrZero(message = "Количество на складе не может быть отрицательным")
-    private int quantityInStock;
+    private Integer quantityInStock;
 
     @PositiveOrZero(message = "Минимальный уровень запаса не может быть отрицательным")
-    private int minStockLevel;
+    private Integer minStockLevel;
 
     @Positive(message = "Количество для повторного заказа должно быть больше 0")
-    private int reorderQuantity;
+    private Integer reorderQuantity;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Цена за единицу должна быть больше 0")
     @Digits(integer = 10, fraction = 2, message = "Цена должна содержать не более 2 знаков после запятой")
     private BigDecimal pricePerUnit;
 
     @NotNull(message = "Поле 'Только по рецепту' не может быть null")
-    private boolean isPrescriptionOnly;
+    private Boolean isPrescriptionOnly;
 
     @AssertTrue(message = "Минимальный уровень запаса не может превышать текущий запас")
-    public boolean isStockLevelValid() {
+    public Boolean isStockLevelValid() {
         return minStockLevel <= quantityInStock;
     }
 
     @AssertTrue(message = "Количество для заказа должно быть больше минимального уровня")
-    public boolean isReorderQuantityValid() {
+    public Boolean isReorderQuantityValid() {
         return reorderQuantity > minStockLevel;
+    }
+
+    @Override
+    public String toString() {
+        return "Medication{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", batchNumber='" + batchNumber + '\'' +
+                ", expiryDate=" + expiryDate +
+                ", quantityInStock=" + quantityInStock +
+                ", minStockLevel=" + minStockLevel +
+                ", reorderQuantity=" + reorderQuantity +
+                ", pricePerUnit=" + pricePerUnit +
+                ", isPrescriptionOnly=" + isPrescriptionOnly +
+                '}';
     }
 }

@@ -1,10 +1,12 @@
 package ru.platform.management.api.dto;
 
+import lombok.Builder;
 import ru.platform.management.core.model.Specialization;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@Builder
 public record DoctorRequestDto(
         String firstName,
         String lastName,

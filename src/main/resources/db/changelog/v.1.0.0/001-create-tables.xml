@@ -63,4 +63,38 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="create-orders-table" author="cool_developer">
+        <createTable tableName="orders">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="medication_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_amount" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_paid" type="BOOLEAN" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="TEXT"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="orders"
+                baseColumnNames="medication_id"
+                referencedTableName="medications"
+                referencedColumnNames="id"
+                onDelete="CASCADE" constraintName="order_constraint"/>
+    </changeSet>
 </databaseChangeLog>

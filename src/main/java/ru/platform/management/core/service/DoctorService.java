@@ -12,9 +12,7 @@ import ru.platform.management.api.mapper.DoctorMapper;
 import ru.platform.management.core.model.entity.Doctor;
 import ru.platform.management.core.repository.DoctorRepository;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -45,32 +43,17 @@ public class DoctorService {
 
     @Transactional
     public DoctorResponseDto updateDoctorById(UUID id, DoctorRequestDto doctorDto) {
-        Doctor newDoctor = doctorMapper.toEntity(doctorDto);
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Доктор с таким UUID не найден"));
 
-        updateExistFields(doctor, newDoctor);
+        doctorMapper.updateDoctorFromDto(doctorDto, doctor);
         doctor = doctorRepository.save(doctor);
         return doctorMapper.toDto(doctor);
-    }
-
-    private void updateExistFields(Doctor doctor, Doctor updatedDoctor) {
-        try {
-            for (Field field : Doctor.class.getDeclaredFields()) {
-                field.setAccessible(true);
-                Object updatedValue = field.get(updatedDoctor);
-                if (updatedValue != null) {
-                    field.set(doctor, updatedValue);
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Error updating doctor fields", e);
-        }
     }
 
     @Transactional
     public SuccessResponseDto deleteDoctorById(UUID id) {
         doctorRepository.deleteById(id);
-        return new SuccessResponseDto("Доктор с ID '" + id + "' успешно удален.");
+        return new SuccessResponseDto("Доктор с UUID '" + id + "' успешно удален.");
     }
 }

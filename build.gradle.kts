@@ -26,6 +26,9 @@ dependencies {
 	implementation("org.mapstruct:mapstruct:1.6.3")
 	implementation("jakarta.validation:jakarta.validation-api:3.1.1")
 	implementation("org.hibernate.validator:hibernate-validator:9.0.1.Final")
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.19.1")
+	implementation("com.fasterxml.jackson.core:jackson-annotations:2.19.1")
+	implementation("com.fasterxml.jackson.core:jackson-core:2.19.1")
 
 	compileOnly("org.projectlombok:lombok:1.18.38")
 	annotationProcessor("org.projectlombok:lombok:1.18.38")

@@ -1,6 +1,5 @@
 package ru.platform.management.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import ru.platform.management.core.model.Specialization;
 

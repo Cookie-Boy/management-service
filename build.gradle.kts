@@ -22,7 +22,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.postgresql:postgresql:42.7.7")
-	implementation("org.liquibase:liquibase-core:4.32.0")
+	implementation("org.liquibase:liquibase-core:5.0.1")
 	implementation("org.mapstruct:mapstruct:1.6.3")
 	implementation("jakarta.validation:jakarta.validation-api:3.1.1")
 	implementation("org.hibernate.validator:hibernate-validator:9.0.1.Final")
@@ -30,8 +30,8 @@ dependencies {
 	implementation("com.fasterxml.jackson.core:jackson-annotations:2.19.1")
 	implementation("com.fasterxml.jackson.core:jackson-core:2.19.1")
 
-	compileOnly("org.projectlombok:lombok:1.18.38")
-	annotationProcessor("org.projectlombok:lombok:1.18.38")
+	compileOnly("org.projectlombok:lombok:1.18.42")
+	annotationProcessor("org.projectlombok:lombok:1.18.42")
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 	annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 

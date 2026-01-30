@@ -21,6 +21,10 @@ public class Doctor {
     @Column(columnDefinition = "UUID")
     private UUID id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clinic_id", nullable = false)
+    private Clinic clinic;
+
     @NotBlank(message = "Имя не может быть пустым")
     @Size(max = 30, message = "Имя слишком длинное, ограничение 30 символов")
     @Column(nullable = false)

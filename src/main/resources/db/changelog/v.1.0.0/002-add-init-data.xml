@@ -5,6 +5,21 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.32.xsd">
 
+    <changeSet id="insert-clinics" author="cool_developer">
+        <insert tableName="clinics">
+            <column name="id" value="123e4567-e89b-12d3-a456-426614174000" type="uuid"/>
+            <column name="name" value="Стоматология 'Улыбка'"/>
+            <column name="address" value="ул. Пушкина, д. 10"/>
+            <column name="phone" value="+7-495-111-22-33"/>
+        </insert>
+        <insert tableName="clinics">
+            <column name="id" value="223e4567-e89b-12d3-a456-426614174000" type="uuid"/>
+            <column name="name" value="Клиника 'Здоровье'"/>
+            <column name="address" value="пр. Ленина, д. 5"/>
+            <column name="phone" value="+7-495-222-33-44"/>
+        </insert>
+    </changeSet>
+
     <!-- Добавление тестовых врачей -->
     <changeSet id="insert-doctors-data" author="cool_developer">
         <insert tableName="doctors">

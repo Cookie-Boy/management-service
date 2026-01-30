@@ -44,8 +44,16 @@ public class MedicationService {
         medications.forEach(medication -> {
             if (medication.getQuantityInStock() <= medication.getMinStockLevel()) {
                 int quantity = calculateOrderQuantity(medication);
-                BigDecimal totalPrice = medication.getPricePerUnit().multiply(new BigDecimal(quantity));
-                Order order = new Order(medication, LocalDateTime.now(), quantity, totalPrice, "PENDING");
+                BigDecimal totalPrice = medication.getPricePerUnit()
+                        .multiply(BigDecimal.valueOf(quantity));
+
+                Order order = new Order(
+                        medication,
+                        LocalDateTime.now(),
+                        quantity,
+                        totalPrice,
+                        "PENDING"
+                );
                 orderService.createOrder(order);
             }
         });

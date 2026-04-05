@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/medicines")
+@RequestMapping("/management/medicines")
 @RequiredArgsConstructor
 public class MedicationController {
 

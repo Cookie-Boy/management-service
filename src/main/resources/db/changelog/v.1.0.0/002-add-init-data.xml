@@ -24,6 +24,7 @@
     <changeSet id="insert-doctors-data" author="cool_developer">
         <insert tableName="doctors">
             <column name="id" value="a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"/>
+            <column name="clinic_id" value="123e4567-e89b-12d3-a456-426614174000"/>
             <column name="first_name" value="Иван"/>
             <column name="last_name" value="Петров"/>
             <column name="middle_name" value="Сергеевич"/>
@@ -39,6 +40,7 @@
 
         <insert tableName="doctors">
             <column name="id" value="b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a12"/>
+            <column name="clinic_id" value="123e4567-e89b-12d3-a456-426614174000"/>
             <column name="first_name" value="Мария"/>
             <column name="last_name" value="Иванова"/>
             <column name="middle_name" value="Александровна"/>

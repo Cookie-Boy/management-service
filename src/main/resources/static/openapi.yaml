@@ -1,0 +1,661 @@
+openapi: 3.0.1
+info:
+  title: Platform Management API
+  description: API для управления врачами и лекарствами в медицинской платформе
+  version: 1.0.0
+  contact:
+    name: Platform Management Team
+  license:
+    name: Proprietary
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+  - url: https://api.platform.example.com
+    description: Production server
+
+tags:
+  - name: Doctors
+    description: Управление врачами (CRUD операции)
+  - name: Medications
+    description: Управление лекарствами (CRUD операции)
+
+paths:
+  # ==================== DOCTORS ENDPOINTS ====================
+  /management/doctors:
+    post:
+      summary: Создать нового врача
+      operationId: createDoctor
+      tags:
+        - Doctors
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorRequestDto'
+            examples:
+              completeDoctor:
+                summary: Полные данные врача
+                value:
+                  firstName: "Анна"
+                  lastName: "Иванова"
+                  middleName: "Петровна"
+                  specialization: "CARDIOLOGIST"
+                  licenseNumber: "LIC-12345-2024"
+                  phoneNumber: "+7 (495) 123-45-67"
+                  email: "anna.ivanova@clinic.ru"
+                  hireDate: "2024-01-15"
+                  startWorkingDay: "09:00:00"
+                  endWorkingDay: "18:00:00"
+                  bio: "Врач-кардиолог высшей категории, стаж 15 лет"
+      responses:
+        '201':
+          description: Врач успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorResponseDto'
+        '400':
+          description: Некорректные данные запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '409':
+          description: Врач с таким email или лицензией уже существует
+          
+    get:
+      summary: Получить список всех врачей
+      operationId: getAllDoctors
+      tags:
+        - Doctors
+      responses:
+        '200':
+          description: Список всех врачей
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DoctorResponseDto'
+
+  /management/doctors/{id}:
+    get:
+      summary: Получить врача по ID
+      operationId: getDoctorById
+      tags:
+        - Doctors
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: UUID врача
+          schema:
+            type: string
+            format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174001"
+      responses:
+        '200':
+          description: Данные врача
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorResponseDto'
+        '404':
+          description: Врач не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+    patch:
+      summary: Обновить данные врача (частичное обновление)
+      operationId: updateDoctor
+      tags:
+        - Doctors
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: UUID врача
+          schema:
+            type: string
+            format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174001"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorRequestDto'
+            examples:
+              updateDoctor:
+                summary: Обновление контактных данных
+                value:
+                  firstName: "Анна"
+                  lastName: "Иванова-Смирнова"
+                  middleName: "Петровна"
+                  specialization: "CARDIOLOGIST"
+                  licenseNumber: "LIC-12345-2024"
+                  phoneNumber: "+7 (495) 987-65-43"
+                  email: "anna.ivanova@clinic.ru"
+                  hireDate: "2024-01-15"
+                  startWorkingDay: "10:00:00"
+                  endWorkingDay: "19:00:00"
+                  bio: "Врач-кардиолог высшей категории, стаж 15 лет"
+      responses:
+        '200':
+          description: Данные врача обновлены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorResponseDto'
+        '400':
+          description: Некорректные данные
+        '404':
+          description: Врач не найден
+
+    delete:
+      summary: Удалить врача
+      operationId: deleteDoctor
+      tags:
+        - Doctors
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: UUID врача
+          schema:
+            type: string
+            format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174001"
+      responses:
+        '200':
+          description: Врач успешно удалён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDto'
+        '404':
+          description: Врач не найден
+        '409':
+          description: Невозможно удалить врача (есть активные записи)
+
+  # ==================== MEDICATIONS ENDPOINTS ====================
+  /management/medicines:
+    post:
+      summary: Добавить новое лекарство
+      operationId: createMedication
+      tags:
+        - Medications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicationRequestDto'
+            examples:
+              completeMedication:
+                summary: Полные данные лекарства
+                value:
+                  name: "Амоксициллин"
+                  description: "Антибиотик широкого спектра действия"
+                  manufacturer: "Фармстандарт"
+                  batchNumber: "BATCH-2024-001"
+                  expiryDate: "2026-12-31"
+                  quantityInStock: 1500
+                  minStockLevel: 100
+                  reorderQuantity: 500
+                  pricePerUnit: 250.50
+                  isPrescriptionOnly: true
+      responses:
+        '201':
+          description: Лекарство успешно добавлено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicationResponseDto'
+        '400':
+          description: Некорректные данные запроса
+        '409':
+          description: Лекарство с таким названием и серией уже существует
+
+    get:
+      summary: Получить список всех лекарств
+      operationId: getAllMedications
+      tags:
+        - Medications
+      responses:
+        '200':
+          description: Список всех лекарств
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MedicationResponseDto'
+
+  /management/medicines/{id}:
+    get:
+      summary: Получить лекарство по ID
+      operationId: getMedicationById
+      tags:
+        - Medications
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: UUID лекарства
+          schema:
+            type: string
+            format: uuid
+          example: "223e4567-e89b-12d3-a456-426614174002"
+      responses:
+        '200':
+          description: Данные лекарства
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicationResponseDto'
+        '404':
+          description: Лекарство не найдено
+
+    patch:
+      summary: Обновить данные лекарства (частичное обновление)
+      operationId: updateMedication
+      tags:
+        - Medications
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: UUID лекарства
+          schema:
+            type: string
+            format: uuid
+          example: "223e4567-e89b-12d3-a456-426614174002"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicationRequestDto'
+            examples:
+              updateStock:
+                summary: Обновление количества на складе
+                value:
+                  name: "Амоксициллин"
+                  description: "Антибиотик широкого спектра действия"
+                  manufacturer: "Фармстандарт"
+                  batchNumber: "BATCH-2024-001"
+                  expiryDate: "2026-12-31"
+                  quantityInStock: 1200
+                  minStockLevel: 100
+                  reorderQuantity: 500
+                  pricePerUnit: 250.50
+                  isPrescriptionOnly: true
+      responses:
+        '200':
+          description: Данные лекарства обновлены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicationResponseDto'
+        '400':
+          description: Некорректные данные
+        '404':
+          description: Лекарство не найдено
+
+    delete:
+      summary: Удалить лекарство
+      operationId: deleteMedication
+      tags:
+        - Medications
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: UUID лекарства
+          schema:
+            type: string
+            format: uuid
+          example: "223e4567-e89b-12d3-a456-426614174002"
+      responses:
+        '200':
+          description: Лекарство успешно удалено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDto'
+        '404':
+          description: Лекарство не найдено
+
+components:
+  schemas:
+    # ============ Specialization Enum ============
+    Specialization:
+      type: string
+      description: Специализация врача
+      enum:
+        - THERAPIST
+        - CARDIOLOGIST
+        - NEUROLOGIST
+        - PEDIATRICIAN
+        - SURGEON
+        - OPHTHALMOLOGIST
+        - DERMATOLOGIST
+        - PSYCHIATRIST
+        - GYNECOLOGIST
+        - UROLOGIST
+        - ENDOCRINOLOGIST
+        - ONCOLOGIST
+        - RADIOLOGIST
+        - PATHOLOGIST
+        - ANESTHESIOLOGIST
+      example: "CARDIOLOGIST"
+
+    # ============ Doctor DTOs ============
+    DoctorRequestDto:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - specialization
+        - licenseNumber
+        - phoneNumber
+        - email
+        - hireDate
+        - startWorkingDay
+        - endWorkingDay
+      properties:
+        firstName:
+          type: string
+          description: Имя врача
+          minLength: 1
+          maxLength: 100
+          example: "Анна"
+        lastName:
+          type: string
+          description: Фамилия врача
+          minLength: 1
+          maxLength: 100
+          example: "Иванова"
+        middleName:
+          type: string
+          description: Отчество врача
+          maxLength: 100
+          nullable: true
+          example: "Петровна"
+        specialization:
+          $ref: '#/components/schemas/Specialization'
+        licenseNumber:
+          type: string
+          description: Номер медицинской лицензии
+          example: "LIC-12345-2024"
+        phoneNumber:
+          type: string
+          description: Контактный телефон
+          pattern: "^\\+?[0-9\\s\\-\\(\\)]{10,20}$"
+          example: "+7 (495) 123-45-67"
+        email:
+          type: string
+          format: email
+          description: Email адрес
+          example: "anna.ivanova@clinic.ru"
+        hireDate:
+          type: string
+          format: date
+          description: Дата найма
+          example: "2024-01-15"
+        startWorkingDay:
+          type: string
+          format: time
+          description: Начало рабочего дня
+          example: "09:00:00"
+        endWorkingDay:
+          type: string
+          format: time
+          description: Конец рабочего дня
+          example: "18:00:00"
+        bio:
+          type: string
+          description: Биография и квалификация врача
+          maxLength: 2000
+          nullable: true
+          example: "Врач-кардиолог высшей категории, стаж 15 лет"
+      additionalProperties: false
+
+    DoctorResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор врача
+          example: "123e4567-e89b-12d3-a456-426614174001"
+        firstName:
+          type: string
+          example: "Анна"
+        lastName:
+          type: string
+          example: "Иванова"
+        middleName:
+          type: string
+          nullable: true
+          example: "Петровна"
+        specialization:
+          $ref: '#/components/schemas/Specialization'
+        licenseNumber:
+          type: string
+          example: "LIC-12345-2024"
+        phoneNumber:
+          type: string
+          example: "+7 (495) 123-45-67"
+        email:
+          type: string
+          format: email
+          example: "anna.ivanova@clinic.ru"
+        hireDate:
+          type: string
+          format: date
+          example: "2024-01-15"
+        startWorkingDay:
+          type: string
+          format: time
+          example: "09:00:00"
+        endWorkingDay:
+          type: string
+          format: time
+          example: "18:00:00"
+        bio:
+          type: string
+          nullable: true
+          example: "Врач-кардиолог высшей категории, стаж 15 лет"
+      additionalProperties: false
+
+    # ============ Medication DTOs ============
+    MedicationRequestDto:
+      type: object
+      required:
+        - name
+        - manufacturer
+        - batchNumber
+        - expiryDate
+        - quantityInStock
+        - minStockLevel
+        - pricePerUnit
+      properties:
+        name:
+          type: string
+          description: Название лекарства
+          minLength: 1
+          maxLength: 200
+          example: "Амоксициллин"
+        description:
+          type: string
+          description: Описание лекарства
+          maxLength: 1000
+          nullable: true
+          example: "Антибиотик широкого спектра действия"
+        manufacturer:
+          type: string
+          description: Производитель
+          example: "Фармстандарт"
+        batchNumber:
+          type: string
+          description: Номер партии
+          example: "BATCH-2024-001"
+        expiryDate:
+          type: string
+          format: date
+          description: Дата истечения срока годности
+          example: "2026-12-31"
+        quantityInStock:
+          type: integer
+          description: Количество на складе
+          minimum: 0
+          example: 1500
+        minStockLevel:
+          type: integer
+          description: Минимальный уровень запаса
+          minimum: 0
+          example: 100
+        reorderQuantity:
+          type: integer
+          description: Количество для заказа при пополнении
+          minimum: 0
+          nullable: true
+          example: 500
+        pricePerUnit:
+          type: number
+          format: decimal
+          description: Цена за единицу
+          minimum: 0
+          example: 250.50
+        isPrescriptionOnly:
+          type: boolean
+          description: Только по рецепту
+          default: false
+          example: true
+      additionalProperties: false
+
+    MedicationResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор лекарства
+          example: "223e4567-e89b-12d3-a456-426614174002"
+        name:
+          type: string
+          example: "Амоксициллин"
+        description:
+          type: string
+          nullable: true
+          example: "Антибиотик широкого спектра действия"
+        manufacturer:
+          type: string
+          example: "Фармстандарт"
+        batchNumber:
+          type: string
+          example: "BATCH-2024-001"
+        expiryDate:
+          type: string
+          format: date
+          example: "2026-12-31"
+        quantityInStock:
+          type: integer
+          example: 1500
+        minStockLevel:
+          type: integer
+          example: 100
+        reorderQuantity:
+          type: integer
+          nullable: true
+          example: 500
+        pricePerUnit:
+          type: number
+          format: decimal
+          example: 250.50
+        isPrescriptionOnly:
+          type: boolean
+          example: true
+      additionalProperties: false
+
+    # ============ Common DTOs ============
+    SuccessResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Сообщение об успешном выполнении операции
+          example: "Doctor successfully deleted"
+      additionalProperties: false
+
+    ErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Сообщение об ошибке
+          example: "Doctor not found with id: 123e4567-e89b-12d3-a456-426614174001"
+      additionalProperties: false
+
+  examples:
+    DoctorListResponse:
+      summary: Пример списка врачей
+      value:
+        - id: "123e4567-e89b-12d3-a456-426614174001"
+          firstName: "Анна"
+          lastName: "Иванова"
+          middleName: "Петровна"
+          specialization: "CARDIOLOGIST"
+          licenseNumber: "LIC-12345-2024"
+          phoneNumber: "+7 (495) 123-45-67"
+          email: "anna.ivanova@clinic.ru"
+          hireDate: "2024-01-15"
+          startWorkingDay: "09:00:00"
+          endWorkingDay: "18:00:00"
+          bio: "Врач-кардиолог высшей категории"
+        - id: "323e4567-e89b-12d3-a456-426614174003"
+          firstName: "Петр"
+          lastName: "Сидоров"
+          middleName: "Иванович"
+          specialization: "NEUROLOGIST"
+          licenseNumber: "LIC-67890-2024"
+          phoneNumber: "+7 (495) 987-65-43"
+          email: "petr.sidorov@clinic.ru"
+          hireDate: "2024-02-01"
+          startWorkingDay: "10:00:00"
+          endWorkingDay: "19:00:00"
+          bio: "Невролог, кандидат медицинских наук"
+
+    MedicationListResponse:
+      summary: Пример списка лекарств
+      value:
+        - id: "223e4567-e89b-12d3-a456-426614174002"
+          name: "Амоксициллин"
+          description: "Антибиотик широкого спектра"
+          manufacturer: "Фармстандарт"
+          batchNumber: "BATCH-2024-001"
+          expiryDate: "2026-12-31"
+          quantityInStock: 1500
+          minStockLevel: 100
+          reorderQuantity: 500
+          pricePerUnit: 250.50
+          isPrescriptionOnly: true
+        - id: "423e4567-e89b-12d3-a456-426614174004"
+          name: "Парацетамол"
+          description: "Жаропонижающее средство"
+          manufacturer: "Фармстандарт"
+          batchNumber: "BATCH-2024-002"
+          expiryDate: "2025-06-30"
+          quantityInStock: 5000
+          minStockLevel: 200
+          reorderQuantity: 1000
+          pricePerUnit: 45.30
+          isPrescriptionOnly: false
+
+security: []

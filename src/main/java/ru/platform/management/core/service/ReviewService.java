@@ -19,7 +19,7 @@ public class ReviewService {
     private final DoctorService doctorService;
 
     public List<Review> getReviewsByDoctorId(UUID doctorId) {
-        if (doctorService.existsById(doctorId)) {
+        if (!doctorService.existsById(doctorId)) {
             throw new IllegalArgumentException("Doctor not found with id: " + doctorId);
         }
         return reviewRepository.findByDoctorIdOrderByCreatedAtDesc(doctorId);

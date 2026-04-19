@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,6 +23,7 @@ public class Review {
     @Id
     private String id;
 
+    @Field(targetType = FieldType.STRING)
     private UUID doctorId;
 
     private String authorName;

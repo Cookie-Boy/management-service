@@ -33,7 +33,7 @@ public class ReviewService {
             );
         }
 
-        if (doctorService.existsById(doctorIdFromPath)) {
+        if (!doctorService.existsById(doctorIdFromPath)) {
             throw new IllegalArgumentException("Doctor not found with id: " + doctorIdFromPath);
         }
 

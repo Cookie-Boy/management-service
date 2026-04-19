@@ -11,7 +11,7 @@ import ru.platform.management.api.dto.SuccessResponseDto;
 import ru.platform.management.api.mapper.MedicationMapper;
 import ru.platform.management.core.model.entity.Medication;
 import ru.platform.management.core.model.entity.Order;
-import ru.platform.management.core.repository.MedicationRepository;
+import ru.platform.management.core.repository.jpa.MedicationRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.platform.management.core.model.entity.Order;
-import ru.platform.management.core.repository.OrderRepository;
+import ru.platform.management.core.repository.jpa.OrderRepository;
 
 import java.util.List;
 import java.util.UUID;

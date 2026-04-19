@@ -21,6 +21,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 	implementation("org.postgresql:postgresql:42.7.7")
 	implementation("org.liquibase:liquibase-core:5.0.1")
 	implementation("org.mapstruct:mapstruct:1.6.3")

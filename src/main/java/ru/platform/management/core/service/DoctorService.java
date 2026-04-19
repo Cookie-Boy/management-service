@@ -10,7 +10,7 @@ import ru.platform.management.api.dto.DoctorResponseDto;
 import ru.platform.management.api.dto.SuccessResponseDto;
 import ru.platform.management.api.mapper.DoctorMapper;
 import ru.platform.management.core.model.entity.Doctor;
-import ru.platform.management.core.repository.DoctorRepository;
+import ru.platform.management.core.repository.jpa.DoctorRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -55,5 +55,9 @@ public class DoctorService {
     public SuccessResponseDto deleteDoctorById(UUID id) {
         doctorRepository.deleteById(id);
         return new SuccessResponseDto("Доктор с UUID '" + id + "' успешно удален.");
+    }
+
+    public boolean existsById(UUID id) {
+        return doctorRepository.existsById(id);
     }
 }

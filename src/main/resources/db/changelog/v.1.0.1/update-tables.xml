@@ -65,33 +65,6 @@
                 tableName="doctors"
                 columnName="license_number"
                 columnDataType="VARCHAR(255)"/>
-
-        <!-- Добавляем проверки на ограничения длины -->
-        <addCheckConstraint
-                tableName="doctors"
-                constraintName="ck_doctors_first_name_length"
-                condition="LENGTH(first_name) <= 30"/>
-
-        <addCheckConstraint
-                tableName="doctors"
-                constraintName="ck_doctors_last_name_length"
-                condition="LENGTH(last_name) <= 30"/>
-
-        <addCheckConstraint
-                tableName="doctors"
-                constraintName="ck_doctors_middle_name_length"
-                condition="LENGTH(middle_name) <= 30"/>
-
-        <addCheckConstraint
-                tableName="doctors"
-                constraintName="ck_doctors_bio_length"
-                condition="LENGTH(bio) <= 1000"/>
-
-        <!-- Добавляем проверку формата лицензии -->
-        <addCheckConstraint
-                tableName="doctors"
-                constraintName="ck_doctors_license_format"
-                condition="license_number ~ '^[A-Za-z0-9-]{6,20}$'"/>
     </changeSet>
 
     <!-- Обновляем таблицу orders в соответствии с новой сущностью -->
@@ -131,24 +104,6 @@
                 tableName="orders"
                 columnName="is_paid"
                 columnDataType="BOOLEAN"/>
-
-        <!-- Добавляем проверку положительного количества -->
-        <addCheckConstraint
-                tableName="orders"
-                constraintName="ck_orders_quantity_positive"
-                condition="quantity > 0"/>
-
-        <!-- Добавляем проверку положительной суммы -->
-        <addCheckConstraint
-                tableName="orders"
-                constraintName="ck_orders_total_amount_positive"
-                condition="total_amount > 0"/>
-
-        <!-- Добавляем проверку длины notes -->
-        <addCheckConstraint
-                tableName="orders"
-                constraintName="ck_orders_notes_length"
-                condition="LENGTH(notes) <= 1000"/>
     </changeSet>
 
     <!-- Добавляем недостающие индексы для производительности -->

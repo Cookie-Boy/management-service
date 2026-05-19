@@ -9,9 +9,9 @@ import ru.platform.management.core.repository.jpa.OrderRepository;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class SupplierService {
 
     private final OrderRepository orderRepository;

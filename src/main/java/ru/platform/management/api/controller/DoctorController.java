@@ -1,6 +1,7 @@
 package ru.platform.management.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import ru.platform.management.core.service.DoctorService;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/management/doctors")
 @RequiredArgsConstructor
@@ -21,6 +23,8 @@ public class DoctorController {
 
     @PostMapping
     public ResponseEntity<DoctorResponseDto> createDoctor(@RequestBody DoctorRequestDto doctorRequestDto) {
+        log.info("Try to create new doctor. Input data (DoctorRequestDto):");
+        log.info(String.valueOf(doctorRequestDto));
         DoctorResponseDto createdDoctor = doctorService.createDoctor(doctorRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDoctor);
     }

@@ -19,8 +19,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public Order createOrder(Order order) {
-        return orderRepository.save(order);
+    public void createOrder(Order order) {
+        orderRepository.save(order);
     }
 
     public List<Order> getAllOrders() {
@@ -30,6 +30,15 @@ public class OrderService {
     public Order getOrderById(UUID id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Заказ с UUID " + id + " не найден"));
+    }
+
+    @Transactional
+    public Order completeOrder(Order order) {
+        if (order.getId() == null || !orderRepository.existsById(order.getId())) {
+            throw new EntityNotFoundException("Заказ с UUID " + order.getId() + " не найден");
+        }
+        order.setStatus("COMPLETE");
+        return orderRepository.save(order);
     }
 
     @Transactional

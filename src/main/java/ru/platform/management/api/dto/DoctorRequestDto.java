@@ -8,6 +8,7 @@ import java.time.LocalTime;
 
 @Builder
 public record DoctorRequestDto(
+        String id,
         String firstName,
         String lastName,
         String middleName,

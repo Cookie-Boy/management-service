@@ -27,14 +27,14 @@ public class MedicationService {
     private final OrderService orderService;
 
     @Transactional
-    public Medication updateStock(UUID id, int quantity) {
+    public void updateStock(UUID id, int quantity) {
         Medication medication = medicationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Препарат с UUID = '" + id + "' не найден"));
 
         int newQuantity = quantity + medication.getQuantityInStock();
         medication.setQuantityInStock(newQuantity);
 
-        return medicationRepository.save(medication);
+        medicationRepository.save(medication);
     }
 
     @Scheduled(cron = "0 30 2 * * ?")

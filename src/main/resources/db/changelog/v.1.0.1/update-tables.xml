@@ -1,0 +1,229 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.32.xsd">
+
+    <!-- Версия 1.0.1: Удаление клиник и обновление структуры -->
+
+    <!-- Удаляем внешний ключ из doctors на clinics -->
+    <changeSet id="002-remove-doctor-clinic-fk" author="cool_developer">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyName="fk_doctor_clinic"/>
+        </preConditions>
+        <dropForeignKeyConstraint
+                baseTableName="doctors"
+                constraintName="fk_doctor_clinic"/>
+    </changeSet>
+
+    <!-- Удаляем колонку clinic_id из doctors -->
+    <changeSet id="003-drop-clinic-id-from-doctors" author="cool_developer">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="doctors" columnName="clinic_id"/>
+        </preConditions>
+        <dropColumn tableName="doctors" columnName="clinic_id"/>
+    </changeSet>
+
+    <!-- Удаляем таблицу clinics -->
+    <changeSet id="004-drop-clinics-table" author="cool_developer">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="clinics"/>
+        </preConditions>
+        <dropTable tableName="clinics" cascadeConstraints="true"/>
+    </changeSet>
+
+    <!-- Обновляем таблицу doctors в соответствии с новой сущностью -->
+    <changeSet id="005-update-doctors-table" author="cool_developer">
+        <!-- Изменяем ограничения на NOT NULL для полей, которые могут быть null -->
+        <addNotNullConstraint
+                tableName="doctors"
+                columnName="first_name"
+                columnDataType="VARCHAR(30)"/>
+
+        <addNotNullConstraint
+                tableName="doctors"
+                columnName="last_name"
+                columnDataType="VARCHAR(30)"/>
+
+        <addNotNullConstraint
+                tableName="doctors"
+                columnName="specialization"
+                columnDataType="VARCHAR(255)"/>
+
+        <addNotNullConstraint
+                tableName="doctors"
+                columnName="email"
+                columnDataType="VARCHAR(255)"/>
+
+        <addNotNullConstraint
+                tableName="doctors"
+                columnName="phone_number"
+                columnDataType="VARCHAR(255)"/>
+
+        <addNotNullConstraint
+                tableName="doctors"
+                columnName="license_number"
+                columnDataType="VARCHAR(255)"/>
+
+        <!-- Добавляем проверки на ограничения длины -->
+        <addCheckConstraint
+                tableName="doctors"
+                constraintName="ck_doctors_first_name_length"
+                condition="LENGTH(first_name) <= 30"/>
+
+        <addCheckConstraint
+                tableName="doctors"
+                constraintName="ck_doctors_last_name_length"
+                condition="LENGTH(last_name) <= 30"/>
+
+        <addCheckConstraint
+                tableName="doctors"
+                constraintName="ck_doctors_middle_name_length"
+                condition="LENGTH(middle_name) <= 30"/>
+
+        <addCheckConstraint
+                tableName="doctors"
+                constraintName="ck_doctors_bio_length"
+                condition="LENGTH(bio) <= 1000"/>
+
+        <!-- Добавляем проверку формата лицензии -->
+        <addCheckConstraint
+                tableName="doctors"
+                constraintName="ck_doctors_license_format"
+                condition="license_number ~ '^[A-Za-z0-9-]{6,20}$'"/>
+    </changeSet>
+
+    <!-- Обновляем таблицу orders в соответствии с новой сущностью -->
+    <changeSet id="006-update-orders-table" author="cool_developer">
+        <!-- Изменяем тип колонки order_date с TIMESTAMP на TIMESTAMP с NOT NULL -->
+        <modifyDataType
+                tableName="orders"
+                columnName="order_date"
+                newDataType="TIMESTAMP"/>
+
+        <addNotNullConstraint
+                tableName="orders"
+                columnName="order_date"
+                columnDataType="TIMESTAMP"/>
+
+        <addNotNullConstraint
+                tableName="orders"
+                columnName="medication_id"
+                columnDataType="UUID"/>
+
+        <addNotNullConstraint
+                tableName="orders"
+                columnName="quantity"
+                columnDataType="INT"/>
+
+        <addNotNullConstraint
+                tableName="orders"
+                columnName="total_amount"
+                columnDataType="DECIMAL(19,2)"/>
+
+        <addNotNullConstraint
+                tableName="orders"
+                columnName="status"
+                columnDataType="VARCHAR(50)"/>
+
+        <addNotNullConstraint
+                tableName="orders"
+                columnName="is_paid"
+                columnDataType="BOOLEAN"/>
+
+        <!-- Добавляем проверку положительного количества -->
+        <addCheckConstraint
+                tableName="orders"
+                constraintName="ck_orders_quantity_positive"
+                condition="quantity > 0"/>
+
+        <!-- Добавляем проверку положительной суммы -->
+        <addCheckConstraint
+                tableName="orders"
+                constraintName="ck_orders_total_amount_positive"
+                condition="total_amount > 0"/>
+
+        <!-- Добавляем проверку длины notes -->
+        <addCheckConstraint
+                tableName="orders"
+                constraintName="ck_orders_notes_length"
+                condition="LENGTH(notes) <= 1000"/>
+    </changeSet>
+
+    <!-- Добавляем недостающие индексы для производительности -->
+    <changeSet id="007-add-performance-indexes" author="cool_developer">
+        <!-- Индекс для поиска по email врача -->
+        <createIndex
+                tableName="doctors"
+                indexName="idx_doctors_email">
+            <column name="email"/>
+        </createIndex>
+
+        <!-- Индекс для поиска по номеру лицензии -->
+        <createIndex
+                tableName="doctors"
+                indexName="idx_doctors_license">
+            <column name="license_number"/>
+        </createIndex>
+
+        <!-- Индекс для поиска по специализации -->
+        <createIndex
+                tableName="doctors"
+                indexName="idx_doctors_specialization">
+            <column name="specialization"/>
+        </createIndex>
+
+        <!-- Индекс для заказов по дате -->
+        <createIndex
+                tableName="orders"
+                indexName="idx_orders_order_date">
+            <column name="order_date"/>
+        </createIndex>
+
+        <!-- Индекс для заказов по статусу -->
+        <createIndex
+                tableName="orders"
+                indexName="idx_orders_status">
+            <column name="status"/>
+        </createIndex>
+
+        <!-- Индекс для заказов по оплате -->
+        <createIndex
+                tableName="orders"
+                indexName="idx_orders_is_paid">
+            <column name="is_paid"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Комментарии к таблицам и колонкам -->
+    <changeSet id="008-add-comments" author="cool_developer">
+        <comment>Добавляем комментарии к таблицам и колонкам для документации</comment>
+
+        <sql stripComments="false">
+            COMMENT ON TABLE doctors IS 'Врачи клиники';
+            COMMENT ON COLUMN doctors.id IS 'Уникальный идентификатор врача (UUID)';
+            COMMENT ON COLUMN doctors.first_name IS 'Имя врача (макс. 30 символов)';
+            COMMENT ON COLUMN doctors.last_name IS 'Фамилия врача (макс. 30 символов)';
+            COMMENT ON COLUMN doctors.middle_name IS 'Отчество врача (макс. 30 символов, опционально)';
+            COMMENT ON COLUMN doctors.specialization IS 'Специализация врача (ENUM)';
+            COMMENT ON COLUMN doctors.license_number IS 'Номер лицензии (формат: от 6 до 20 символов, буквы/цифры/дефис)';
+            COMMENT ON COLUMN doctors.phone_number IS 'Номер телефона врача (уникальный)';
+            COMMENT ON COLUMN doctors.email IS 'Email врача (уникальный)';
+            COMMENT ON COLUMN doctors.hire_date IS 'Дата приема на работу';
+            COMMENT ON COLUMN doctors.start_working_day IS 'Время начала рабочего дня';
+            COMMENT ON COLUMN doctors.end_working_day IS 'Время окончания рабочего дня';
+            COMMENT ON COLUMN doctors.bio IS 'Биография врача (макс. 1000 символов)';
+
+            COMMENT ON TABLE orders IS 'Заказы лекарств';
+            COMMENT ON COLUMN orders.id IS 'Уникальный идентификатор заказа (UUID)';
+            COMMENT ON COLUMN orders.medication_id IS 'ID лекарства (внешний ключ)';
+            COMMENT ON COLUMN orders.order_date IS 'Дата и время создания заказа';
+            COMMENT ON COLUMN orders.quantity IS 'Количество заказанных единиц (положительное)';
+            COMMENT ON COLUMN orders.total_amount IS 'Общая сумма заказа (положительная)';
+            COMMENT ON COLUMN orders.status IS 'Статус заказа';
+            COMMENT ON COLUMN orders.is_paid IS 'Признак оплаты заказа';
+            COMMENT ON COLUMN orders.notes IS 'Примечания к заказу (макс. 1000 символов)';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

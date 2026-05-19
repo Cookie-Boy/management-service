@@ -8,5 +8,6 @@
     <include file="db/changelog/create-schema.sql" relativeToChangelogFile="false"/>
     <include file="v.1.0.0/001-create-tables.xml" relativeToChangelogFile="true"/>
     <include file="v.1.0.0/002-add-init-data.xml" relativeToChangelogFile="true"/>
+    <include file="v.1.0.1/update-tables.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

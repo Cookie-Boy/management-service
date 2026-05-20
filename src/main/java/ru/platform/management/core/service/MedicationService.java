@@ -3,6 +3,7 @@ package ru.platform.management.core.service;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.platform.management.api.dto.MedicationRequestDto;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MedicationService {
@@ -40,6 +42,7 @@ public class MedicationService {
     @Scheduled(fixedDelay = 100_000)
     public void checkAllMedicationsStock() {
         List<Medication> medications = medicationRepository.findAll();
+        log.info("check medications quantity: {}", medications.size());
 
         medications.forEach(medication -> {
             if (medication.getQuantityInStock() <= medication.getMinStockLevel()) {

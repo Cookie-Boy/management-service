@@ -37,7 +37,7 @@ public class MedicationService {
         medicationRepository.save(medication);
     }
 
-    @Scheduled(cron = "0 30 2 * * ?")
+    @Scheduled(fixedDelay = 100_000)
     public void checkAllMedicationsStock() {
         List<Medication> medications = medicationRepository.findAll();
 

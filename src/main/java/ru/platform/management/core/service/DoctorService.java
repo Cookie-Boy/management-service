@@ -35,6 +35,11 @@ public class DoctorService {
         return doctorMapper.toDto(doctors);
     }
 
+    public List<DoctorResponseDto> getDoctorsByClinicId(UUID clinicId) {
+        List<Doctor> doctors = doctorRepository.findAllByClinicId(clinicId);
+        return doctorMapper.toDto(doctors);
+    }
+
     public DoctorResponseDto getDoctorById(UUID id) {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Доктор с таким UUID не найден"));

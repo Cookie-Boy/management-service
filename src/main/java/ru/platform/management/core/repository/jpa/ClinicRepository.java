@@ -2,12 +2,10 @@ package ru.platform.management.core.repository.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.platform.management.core.model.entity.Doctor;
+import ru.platform.management.core.model.entity.Clinic;
 
-import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface DoctorRepository extends JpaRepository<Doctor, UUID> {
-    List<Doctor> findAllByClinicId(UUID clinicId);
+public interface ClinicRepository extends JpaRepository<Clinic, UUID> {
 }

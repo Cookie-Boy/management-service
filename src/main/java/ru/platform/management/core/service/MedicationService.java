@@ -79,6 +79,11 @@ public class MedicationService {
         return medicationMapper.toDto(medicines);
     }
 
+    public List<MedicationResponseDto> getMedicationsByClinicId(UUID clinicId) {
+        List<Medication> medicines = medicationRepository.findAllByClinicId(clinicId);
+        return medicationMapper.toDto(medicines);
+    }
+
     public MedicationResponseDto getMedicationById(UUID id) {
         Medication medication = medicationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Лекарство с ID = " + id + " не найдено."));

@@ -37,7 +37,7 @@ public class DoctorController {
 
     @GetMapping
     public ResponseEntity<List<DoctorResponseDto>> getDoctorsByClinicId(UUID clinicId) {
-        List<DoctorResponseDto> doctorDtoList = doctorService.getDoctorsByClinicId();
+        List<DoctorResponseDto> doctorDtoList = doctorService.getDoctorsByClinicId(clinicId);
         return ResponseEntity.ok(doctorDtoList);
     }
 

@@ -10,6 +10,7 @@ import java.util.UUID;
 @Builder
 public record DoctorResponseDto (
         UUID id,
+        UUID clinicId,
         String firstName,
         String lastName,
         String middleName,

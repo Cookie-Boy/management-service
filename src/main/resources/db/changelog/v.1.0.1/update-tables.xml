@@ -35,7 +35,6 @@
 
     <!-- Обновляем таблицу doctors в соответствии с новой сущностью -->
     <changeSet id="005-update-doctors-table" author="cool_developer">
-        <!-- Изменяем ограничения на NOT NULL для полей, которые могут быть null -->
         <addNotNullConstraint
                 tableName="doctors"
                 columnName="first_name"

@@ -20,6 +20,10 @@ public class Medication {
     @Column(columnDefinition = "UUID")
     private UUID id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clinic_id")
+    private Clinic clinic;
+
     @NotBlank(message = "Название лекарства не может быть пустым")
     @Size(max = 30, message = "Название слишком длинное (макс. 30 символов)")
     private String name;

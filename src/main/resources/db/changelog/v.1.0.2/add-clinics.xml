@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.32.xsd">
+
+    <!-- Создание таблицы clinics -->
+    <changeSet id="001-create-clinics-table" author="cool_developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="clinics"/>
+            </not>
+        </preConditions>
+        <createTable tableName="clinics">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="varchar(500)"/>
+            <column name="phone" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Добавление колонки clinic_id в таблицу doctors -->
+    <changeSet id="010-add-clinic-id-to-doctors" author="cool_developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="doctors" columnName="clinic_id"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="doctors">
+            <column name="clinic_id" type="UUID"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Создание внешнего ключа с защитой от удаления клиники -->
+    <changeSet id="011-add-foreign-key-clinic-doctors" author="cool_developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_doctor_clinic"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint
+                constraintName="fk_doctor_clinic"
+                baseTableName="doctors"
+                baseColumnNames="clinic_id"
+                referencedTableName="clinics"
+                referencedColumnNames="id"
+                onDelete="SET NULL"/>
+    </changeSet>
+
+    <!-- Добавление колонки clinic_id в таблицу medications -->
+    <changeSet id="021-add-clinic-id-to-medications" author="cool_developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="medications" columnName="clinic_id"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="medications">
+            <column name="clinic_id" type="UUID"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Создание внешнего ключа с защитой от удаления клиники -->
+    <changeSet id="022-add-foreign-key-clinic-medications" author="cool_developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_medication_clinic"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint
+                constraintName="fk_medication_clinic"
+                baseTableName="medications"
+                baseColumnNames="clinic_id"
+                referencedTableName="clinics"
+                referencedColumnNames="id"
+                onDelete="SET NULL"/>
+    </changeSet>
+
+    <!-- Индекс для clinic_id (опционально, но ускорит выборку врачей по клинике) -->
+    <changeSet id="012-add-index-doctors-clinic" author="cool_developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="idx_doctors_clinic"/>
+            </not>
+        </preConditions>
+        <createIndex
+                tableName="doctors"
+                indexName="idx_doctors_clinic">
+            <column name="clinic_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

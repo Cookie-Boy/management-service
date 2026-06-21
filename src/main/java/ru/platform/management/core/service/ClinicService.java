@@ -25,7 +25,6 @@ public class ClinicService {
 
     @Transactional
     public ClinicResponseDto createClinic(ClinicRequestDto clinicDto) {
-        
         Clinic clinic = clinicMapper.toEntity(clinicDto);
         clinic = clinicRepository.save(clinic);
         return clinicMapper.toDto(clinic);

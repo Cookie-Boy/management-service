@@ -1,9 +1,6 @@
 package ru.platform.management.core.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,15 +12,16 @@ import java.util.UUID;
 @Setter
 public class Clinic {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition = "UUID")
     private UUID id;
 
     @Column(nullable = false)
     private String name;
 
-    @Column()
+    @Column
     private String address;
 
-    @Column()
+    @Column
     private String phone;
 }

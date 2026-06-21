@@ -35,8 +35,8 @@ public class DoctorController {
         return ResponseEntity.ok(doctorDtoList);
     }
 
-    @GetMapping
-    public ResponseEntity<List<DoctorResponseDto>> getDoctorsByClinicId(UUID clinicId) {
+    @GetMapping("/clinic/{clinicId}")
+    public ResponseEntity<List<DoctorResponseDto>> getDoctorsByClinicId(@PathVariable UUID clinicId) {
         List<DoctorResponseDto> doctorDtoList = doctorService.getDoctorsByClinicId(clinicId);
         return ResponseEntity.ok(doctorDtoList);
     }

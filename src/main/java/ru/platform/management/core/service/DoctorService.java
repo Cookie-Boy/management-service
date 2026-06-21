@@ -5,11 +5,14 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.platform.management.api.dto.ClinicResponseDto;
 import ru.platform.management.api.dto.DoctorRequestDto;
 import ru.platform.management.api.dto.DoctorResponseDto;
 import ru.platform.management.api.dto.SuccessResponseDto;
 import ru.platform.management.api.mapper.DoctorMapper;
+import ru.platform.management.core.model.entity.Clinic;
 import ru.platform.management.core.model.entity.Doctor;
+import ru.platform.management.core.repository.jpa.ClinicRepository;
 import ru.platform.management.core.repository.jpa.DoctorRepository;
 
 import java.util.List;
@@ -22,10 +25,17 @@ public class DoctorService {
 
     private final DoctorMapper doctorMapper;
     private final DoctorRepository doctorRepository;
+    private final ClinicRepository clinicRepository;
 
     @Transactional
     public DoctorResponseDto createDoctor(DoctorRequestDto doctorDto) {
         Doctor doctor = doctorMapper.toEntity(doctorDto);
+
+        Clinic clinic = clinicRepository.findById(UUID.fromString(doctorDto.clinicId()))
+                .orElseThrow(() -> new EntityNotFoundException("Клиника не найдена"));
+
+        doctor.setClinic(clinic);
+
         doctor = doctorRepository.save(doctor);
         return doctorMapper.toDto(doctor);
     }

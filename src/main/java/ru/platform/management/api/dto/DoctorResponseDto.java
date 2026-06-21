@@ -11,6 +11,7 @@ import java.util.UUID;
 public record DoctorResponseDto (
         UUID id,
         UUID clinicId,
+        String clinicName,
         String firstName,
         String lastName,
         String middleName,

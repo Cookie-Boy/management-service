@@ -9,6 +9,8 @@ import java.util.UUID;
 @Builder
 public record MedicationResponseDto(
         UUID id,
+        UUID clinicId,
+        String clinicName,
         String name,
         String description,
         String manufacturer,

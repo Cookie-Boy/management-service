@@ -6,12 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ru.platform.management.api.dto.MedicationRequestDto;
-import ru.platform.management.api.dto.MedicationResponseDto;
-import ru.platform.management.api.dto.SuccessResponseDto;
+import ru.platform.management.api.dto.*;
 import ru.platform.management.api.mapper.MedicationMapper;
+import ru.platform.management.core.model.entity.Clinic;
+import ru.platform.management.core.model.entity.Doctor;
 import ru.platform.management.core.model.entity.Medication;
 import ru.platform.management.core.model.entity.Order;
+import ru.platform.management.core.repository.jpa.ClinicRepository;
 import ru.platform.management.core.repository.jpa.MedicationRepository;
 
 import java.math.BigDecimal;
@@ -27,6 +28,7 @@ public class MedicationService {
     private final MedicationRepository medicationRepository;
     private final MedicationMapper medicationMapper;
     private final OrderService orderService;
+    private final ClinicRepository clinicRepository;
 
     @Transactional
     public void updateStock(UUID id, int quantity) {
@@ -70,6 +72,12 @@ public class MedicationService {
     @Transactional
     public MedicationResponseDto createMedication(MedicationRequestDto medicationDto) {
         Medication medication = medicationMapper.toEntity(medicationDto);
+
+        Clinic clinic = clinicRepository.findById(UUID.fromString(medicationDto.clinicId()))
+                .orElseThrow(() -> new EntityNotFoundException("Клиника не найдена"));
+
+        medication.setClinic(clinic);
+
         medication = medicationRepository.save(medication);
         return medicationMapper.toDto(medication);
     }

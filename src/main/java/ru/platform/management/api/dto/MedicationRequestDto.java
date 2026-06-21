@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 @Builder
 public record MedicationRequestDto(
+        String clinicId,
         String name,
         String description,
         String manufacturer,

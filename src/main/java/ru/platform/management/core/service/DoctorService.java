@@ -33,7 +33,6 @@ public class DoctorService {
 
         Clinic clinic = clinicRepository.findById(UUID.fromString(doctorDto.clinicId()))
                 .orElseThrow(() -> new EntityNotFoundException("Клиника не найдена"));
-
         doctor.setClinic(clinic);
 
         doctor = doctorRepository.save(doctor);
@@ -60,6 +59,12 @@ public class DoctorService {
     public DoctorResponseDto updateDoctorById(UUID id, DoctorRequestDto doctorDto) {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Доктор с таким UUID не найден"));
+
+        if (doctorDto.clinicId() != null) {
+            Clinic clinic = clinicRepository.findById(UUID.fromString(doctorDto.clinicId()))
+                    .orElseThrow(() -> new EntityNotFoundException("Клиника не найдена"));
+            doctor.setClinic(clinic);
+        }
 
         doctorMapper.updateDoctorFromDto(doctorDto, doctor);
         doctor = doctorRepository.save(doctor);

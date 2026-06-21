@@ -103,6 +103,12 @@ public class MedicationService {
         Medication medication = medicationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Лекарство с UUID = '" + id + "' не найдено."));
 
+        if (medicationDto.clinicId() != null) {
+            Clinic clinic = clinicRepository.findById(UUID.fromString(medicationDto.clinicId()))
+                    .orElseThrow(() -> new EntityNotFoundException("Клиника не найдена"));
+            medication.setClinic(clinic);
+        }
+
         medicationMapper.updateMedicationFromDto(medicationDto, medication);
         medication = medicationRepository.save(medication);
         return medicationMapper.toDto(medication);

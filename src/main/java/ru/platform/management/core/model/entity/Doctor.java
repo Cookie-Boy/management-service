@@ -11,7 +11,7 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "doctors")
+@Table(name = "doctors", schema = "management")
 @Getter
 @Setter
 public class Doctor {

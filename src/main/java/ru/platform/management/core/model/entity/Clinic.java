@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-@Table(name = "clinics")
+@Table(name = "clinics", schema = "management")
 @Getter
 @Setter
 public class Clinic {

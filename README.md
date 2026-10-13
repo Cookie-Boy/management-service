@@ -459,25 +459,6 @@ sequenceDiagram
 | `MONGO_HOST` / `MONGO_PORT` | MongoDB | `localhost` / `27017` |
 | `KEYCLOAK_ISSUER_URI` | Issuer URI Keycloak | `http://localhost:8080/realms/clinic-realm` |
 
-### `application.properties` (фрагмент)
-
-```properties
-server.port=8082
-spring.application.name=management
-
-spring.datasource.url=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-spring.datasource.username=${POSTGRES_USER}
-spring.datasource.password=${POSTGRES_PASSWORD}
-spring.jpa.hibernate.ddl-auto=validate
-spring.jpa.properties.hibernate.default_schema=management
-
-spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.xml
-
-spring.data.mongodb.uri=mongodb://${MONGO_HOST}:${MONGO_PORT}/vet-clinic
-
-spring.security.oauth2.resourceserver.jwt.issuer-uri=${KEYCLOAK_ISSUER_URI}
-```
-
 ---
 
 ## 🚀 Запуск
